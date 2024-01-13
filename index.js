@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config(); // Cargar variables de entorno desde el archivo .env
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? process.env.PORT : 3001;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/enviar-correo', (req, res) => {
   const { email, nombre, comentarios } = req.body;
 
+  //res.status(200).send( JSON.stringify({body: req.body}) )
+  
   const mailOptions = {
     from: process.env.GMAIL_USER, // Utilizar la variable de entorno para la dirección de Gmail
     to: process.env.GMAIL_RECEIPMENT,
@@ -33,6 +35,7 @@ app.post('/enviar-correo', (req, res) => {
 
     res.status(200).send('Correo enviado con éxito');
   });
+  
 });
 
 app.listen(PORT, () => {
