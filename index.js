@@ -28,8 +28,8 @@ app.post('/enviar-correo', (req, res) => {
   const mailOptions = {
     from: process.env.GMAIL_USER, // Utilizar la variable de entorno para la dirección de Gmail
     to: process.env.GMAIL_RECEIPMENT,
-    subject: 'Nuevo formulario recibido',
-    text: `Nombre: ${nombre}\nEmail: ${email}\nComentarios: ${comentarios}`
+    subject: 'Nuevo formulario recibido '+obtenerFechaActual(),
+    text: `Nombre: ${nombre}\nNúmero de contacto: ${email}\n Cuéntame en qué te puedo ayudar: ${comentarios}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -45,3 +45,17 @@ app.post('/enviar-correo', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
+const obtenerFechaActual = () => {
+  const ahora = new Date();
+
+  const dia = ahora.getDate().toString().padStart(2, '0');
+  const mes = (ahora.getMonth() + 1).toString().padStart(2, '0'); // Nota: Los meses comienzan desde 0
+  const anio = ahora.getFullYear();
+  const horas = ahora.getHours().toString().padStart(2, '0');
+  const minutos = ahora.getMinutes().toString().padStart(2, '0');
+  const segundos = ahora.getSeconds().toString().padStart(2, '0');
+
+  const fechaFormateada = `${dia}-${mes}-${anio} ${horas}:${minutos}:${segundos}`;
+  return fechaFormateada;
+};
