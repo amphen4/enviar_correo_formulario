@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const cors = require('cors');
+
 require('dotenv').config(); // Cargar variables de entorno desde el archivo .env
 
 const app = express();
 const PORT = process.env.PORT ? process.env.PORT : 3001;
+
+app.use(cors()); // Habilita CORS
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -32,7 +36,7 @@ app.post('/enviar-correo', (req, res) => {
     if (error) {
       return res.status(500).send(`Error al enviar el correo: ${error.message}`);
     }
-
+    res.header('Access-Control-Allow-Origin', '*');
     res.status(200).send('Correo enviado con éxito');
   });
   
