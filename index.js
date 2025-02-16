@@ -35,7 +35,7 @@ app.post('/enviar-correo', (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return res.status(500).send(`Error al enviar el correo: ${error.message}`);
+      return res.status(500).send(`Error al enviar el correo: ${error.message}. GMAIL_USER: ${process.env.GMAIL_USER} `);
     }
     res.header('Access-Control-Allow-Origin', '*');
     res.status(200).send('Correo enviado con éxito');
